@@ -16,19 +16,19 @@ def getCharInfo(name):
     types = ['Loved Gifts', 'Liked Gifts', 'Neutral Gifts', 'Disliked Gifts', 'Hated Gifts']
     character = {}
 
-    for i in range(len(types)):
+    for tipo in range(len(types)):
         gostosE = []
-        for j in gostos[i].find_all('tr'):
-            a = j.find_all('td')
-            b = j.find_all('li')
-            if(len(a) == 0):
+        for j in gostos[tipo].find_all('tr'):
+            text = j.find_all('td')
+            lists = j.find_all('li')
+            if(len(text) == 0):
                 continue
-            elif(len(b) != 0):
-                for k in b:
+            elif(len(lists) != 0):
+                for k in lists:
                     gostosE.append(k.text.rstrip())
             else:
-                gostosE.append(a[1].text.rstrip())
-        character[types[i]] = gostosE        
+                gostosE.append(text[1].text.rstrip())
+        character[types[tipo]] = gostosE        
         
 
 
@@ -46,16 +46,15 @@ def getCharInfo(name):
             
         if(len(infos[i].find_all('span', class_='nametemplate'))):
             continue
-            #for j in infos[i].find_all('span', class_='nametemplate'):
-            #    loved_gifts.append(j.text.rstrip().replace('\xa0',''))
-
-            #character[labels[i].text.rstrip()] = loved_gifts
         else:
             if(labels[i].text.rstrip() == 'Family'):
+
                 family = []
+
                 for j in infos[i].find_all('a'):
                     family.append(j.text.rstrip().replace('\xa0',''))
                 character[labels[i].text.rstrip()] = family
+                
             elif((labels[i].text.rstrip() == 'Birthday') and (labels[i].text.rstrip() != 'Unknown')):
                 
                 separated_date = infos[i].text.rstrip().replace('\xa0','').split(' ')
