@@ -2,6 +2,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
+import re
 
 url = 'https://stardewvalleywiki.com/Crops'
 driver = webdriver.Chrome()  
@@ -60,7 +61,7 @@ for i in range(len(crops)-7):
     growth_time = line2[growth_time_index-1].get_text().rstrip()
 
     if 'Regrowth' in line2[growth_time_index].get_text().rstrip():
-        crop['Regrowth Time (In Days)'] = line2[growth_time_index].get_text().rstrip().split(':')[1].rstrip()
+        crop['Regrowth Time (In Days)'] = line2[growth_time_index].get_text().rstrip().split(':')[1].rstrip().split(' ')[0]
 
 
     ### Managing regrowth time ###  
@@ -95,7 +96,9 @@ for i in range(len(crops)-7):
 
         if 'Season' in linha.get_text():
             season = linha.find_all('td')[1].get_text().rstrip()
-            crop['Season'] = season.replace('\n ','')
+            crop['Season'] = re.sub(r'[^A-Za-z0-9 ]+', '', season)
+            crop['Season'] = crop['Season'].split(' ')
+
         
         if 'XP' in linha.get_text():
             xp = linha.find_all('td')[1].get_text().rstrip()
@@ -111,10 +114,7 @@ for i in range(len(crops)-7):
                     crop['Sell Price (Seed)'] = "edit"
 
         
-
         ### Managing Purchase Prices ###
-
-            
                 
 
     print(crop)
