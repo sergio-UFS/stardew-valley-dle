@@ -97,8 +97,8 @@ for i in range(len(crops)-7):
         if 'Season' in linha.get_text():
             season = linha.find_all('td')[1].get_text().rstrip()
             crop['Season'] = re.sub(r'[^A-Za-z0-9 ]+', '', season)
-            crop['Season'] = crop['Season'].split(' ')
-
+            crop['Season'] = list(crop['Season'].split(' '))
+                    
         
         if 'XP' in linha.get_text():
             xp = linha.find_all('td')[1].get_text().rstrip()
@@ -116,8 +116,6 @@ for i in range(len(crops)-7):
         
         ### Managing Purchase Prices ###
                 
-
-    print(crop)
     allCrops.append(crop)
 
 
